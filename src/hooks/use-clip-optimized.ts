@@ -228,7 +228,7 @@ export const getAllPolygons = (points: Vector2[], tolerance: number) => {
 
 type ClipFilter = (item: Object3D<Object3DEventMap>) => boolean;
 
-const useClip = () => {
+const useClipOptimized = () => {
   const { scene }: UseThree = useThree();
 
   const clip = (
@@ -313,4 +313,4 @@ const useClip = () => {
   return { clip };
 };
 
-export default useClip;
+export default useClipOptimized;

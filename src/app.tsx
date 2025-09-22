@@ -12,9 +12,12 @@ import Scene from "./scene";
 import ModelInput from "./components/model-input";
 import { Leva } from "leva";
 import Legends from "./components/legends";
-import ClipPlayground from "./components/clip-playground";
+import ClipOptimized from "./components/clip-optimized";
 import { Perf } from "r3f-perf";
 import KeyMonitor from "./components/key-monitor";
+import ClipPlane from "./components/clip-plane";
+import Csg from "./components/csg";
+import ClipUnoptimized from "./components/clip-unoptimized";
 function App() {
   return (
     <div className="w-screen h-screen">
@@ -30,7 +33,10 @@ function App() {
           far={88888}
         />
         <CameraControls makeDefault />
-        <ClipPlayground />
+        <ClipPlane />
+        <Csg />
+        <ClipUnoptimized />
+        <ClipOptimized />
         <GizmoHelper>
           <GizmoViewport />
         </GizmoHelper>
@@ -39,7 +45,12 @@ function App() {
       <div className="fixed left-4 top-4">
         <ModelInput />
       </div>
-      <div className="fixed left-4 top-62 w-[294px]">
+      <div
+        className="fixed left-4 top-62 w-[294px] overflow-y-auto"
+        style={{
+          height: `calc(100vh - 372px)`,
+        }}
+      >
         <Leva fill titleBar={{ drag: false, filter: false }} />
       </div>
       <div className="fixed right-4 top-4">

@@ -1,85 +1,72 @@
-import { PivotControls, Wireframe } from "@react-three/drei";
 import { useAtomValue, useSetAtom } from "jotai";
 import { button, useControls } from "leva";
-import { useRef, useState } from "react";
-import { DoubleSide, LineSegments, Mesh } from "three";
 import {
-  clipToleranceAtom,
   latestClipWastedTimeAtom,
   theLongestEdgeLengthAtom,
 } from "../shared-variables";
-import useClip from "../hooks/use-clip-optimized";
-import { Segments } from "@react-three/drei";
-import useBvh from "../hooks/useBvh";
+import { useRef, useState } from "react";
+import useCSG from "../hooks/use-csg";
+import useBvh from "../hooks/use-bvh";
+import { DoubleSide, type Mesh } from "three";
+import { PivotControls, Wireframe } from "@react-three/drei";
 
-const ClipPlayground = () => {
+const Csg = () => {
   const theLongestEdgeLength = useAtomValue(theLongestEdgeLengthAtom);
 
   const clipPlaneMeshRef = useRef<Mesh>(null);
 
-  const { clip } = useClip();
+  const { csg } = useCSG();
 
   const { buildBvh } = useBvh();
-
-  const [clipResultLines, setClipResultLines] = useState<LineSegments[][]>([]);
 
   const [clipResultMeshes, setClipResultMeshes] = useState<Mesh[]>([]);
 
   const setLatestClipWastedTime = useSetAtom(latestClipWastedTimeAtom);
-
-  const clipTolerance = useAtomValue(clipToleranceAtom);
 
   const handleClip = () => {
     setLatestClipWastedTime(0);
     if (clipPlaneMeshRef.current) {
       const startTime = performance.now();
       buildBvh((item) => item.userData.canClip);
-      const { lines, meshList } = clip(
+      const meshList = csg(
         clipPlaneMeshRef.current,
-        (item) => item.userData.canClip,
-        clipTolerance
+        (item) => item.userData.canClip
       );
+      console.log(meshList);
+
       const endtime = performance.now();
       const time = endtime - startTime;
       setLatestClipWastedTime(time);
-      setClipResultLines(lines);
       setClipResultMeshes(meshList);
     }
   };
 
   const clearClipResult = () => {
-    setClipResultLines([]);
     setClipResultMeshes([]);
   };
 
-  const {
-    showClipPlane,
-    showClipResultLines,
-    showClipResultMeshes,
-    clipResultMeshesWireframe,
-  } = useControls(
-    {
-      showClipPlane: {
-        label: "显示剪裁平面",
-        value: false,
+  const { showClipPlane, showClipResultMeshes, clipResultMeshesWireframe } =
+    useControls(
+      "02 csg",
+      {
+        showClipPlane: {
+          label: "显示剪裁平面",
+          value: false,
+        },
+        剪裁: button(() => handleClip()),
+
+        showClipResultMeshes: {
+          label: "显示剪裁结果",
+          value: true,
+        },
+        clipResultMeshesWireframe: {
+          label: "剪裁结果线框显示",
+          value: false,
+        },
+        清除剪裁结果: button(() => clearClipResult()),
       },
-      剪裁: button(() => handleClip()),
-      showClipResultLines: {
-        label: "显示剪裁轮廓线",
-        value: false,
-      },
-      showClipResultMeshes: {
-        label: "显示剪裁结果",
-        value: true,
-      },
-      clipResultMeshesWireframe: {
-        label: "剪裁结果线框显示",
-        value: false,
-      },
-      清除剪裁结果: button(() => clearClipResult()),
-    },
-    [handleClip, clipPlaneMeshRef, clearClipResult]
-  );
+      [handleClip, clipPlaneMeshRef, clearClipResult]
+    );
 
   return (
     <>
@@ -87,8 +74,8 @@ const ClipPlayground = () => {
         <>
           <PivotControls scale={theLongestEdgeLength / 2}>
             <mesh ref={clipPlaneMeshRef}>
-              <planeGeometry
-                args={[theLongestEdgeLength, theLongestEdgeLength]}
+              <boxGeometry
+                args={[theLongestEdgeLength, theLongestEdgeLength, 0.1]}
               />
               <meshStandardMaterial
                 color={0xff0000}
@@ -102,15 +89,8 @@ const ClipPlayground = () => {
           </PivotControls>
         </>
       )}
-      {showClipResultLines && clipResultLines.length && (
-        <Segments>
-          {clipResultLines.flat().map((segment) => (
-            <primitive key={segment.uuid} object={segment} />
-          ))}
-        </Segments>
-      )}
 
-      {showClipResultMeshes && clipResultLines.length && (
+      {showClipResultMeshes && clipResultMeshes.length && (
         <group>
           {clipResultMeshes.map((mesh) => (
             <mesh
@@ -130,4 +110,4 @@ const ClipPlayground = () => {
   );
 };
 
-export default ClipPlayground;
+export default Csg;

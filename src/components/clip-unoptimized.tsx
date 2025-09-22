@@ -57,7 +57,7 @@ const ClipUnoptimized = () => {
     showClipResultMeshes,
     clipResultMeshesWireframe,
   } = useControls(
-    "03 clip unoptimized",
+    "03 Proposed method",
     {
       showClipPlane: {
         label: "显示剪裁平面",

@@ -60,23 +60,23 @@ const ClipUnoptimized = () => {
     "03 Proposed method",
     {
       showClipPlane: {
-        label: "显示剪裁平面",
+        label: "show proposed clip plane",
         value: false,
       },
-      剪裁: button(() => handleClip()),
+      cut: button(() => handleClip()),
       showClipResultLines: {
-        label: "显示剪裁轮廓线",
+        label: "show clip result lines",
         value: false,
       },
       showClipResultMeshes: {
-        label: "显示剪裁结果",
+        label: "show clip result meshes",
         value: true,
       },
       clipResultMeshesWireframe: {
-        label: "剪裁结果线框显示",
+        label: "clip result meshes wireframe",
         value: false,
       },
-      清除剪裁结果: button(() => clearClipResult()),
+      "clear clip result": button(() => clearClipResult()),
     },
     [handleClip, clipPlaneMeshRef, clearClipResult]
   );

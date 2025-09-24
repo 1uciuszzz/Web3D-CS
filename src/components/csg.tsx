@@ -47,7 +47,7 @@ const Csg = () => {
 
   const { showClipPlane, showClipResultMeshes, clipResultMeshesWireframe } =
     useControls(
-      "02 csg",
+      "02 CSG method",
       {
         showClipPlane: {
           label: "显示剪裁平面",

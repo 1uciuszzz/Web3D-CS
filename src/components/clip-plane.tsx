@@ -5,7 +5,7 @@ import { Mesh, Plane, Vector3 } from "three";
 
 const ClipPlane = () => {
   const { showClipPlane, planeNormal, planePosition } = useControls(
-    "01 clip plane",
+    "01 Occlusion method",
     {
       showClipPlane: {
         label: "显示遮挡平面",

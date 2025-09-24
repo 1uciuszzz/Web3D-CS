@@ -60,7 +60,7 @@ const ModelInput = () => {
       processModelFile({ fileName, fileBuffer: buffer });
     } catch (error) {
       console.error(error);
-      toast.error("无法加载示例文件");
+      toast.error("can't load model file");
     }
   };
 
@@ -71,7 +71,7 @@ const ModelInput = () => {
       <div className="flex flex-col gap-4">
         <input
           type="file"
-          className="file-input"
+          className="file-input w-96"
           accept=".glb,.gltf"
           onChange={async (e) => {
             const file = e.target.files?.[0];
@@ -85,12 +85,8 @@ const ModelInput = () => {
             e.target.value = "";
           }}
         />
-        <select
-          defaultValue="选择示例文件"
-          className="select"
-          onChange={handleExampleFileChange}
-        >
-          <option disabled={true}>选择示例文件</option>
+        <select className="select w-96" onChange={handleExampleFileChange}>
+          <option disabled={true}>select example model</option>
           <option value="37861.glb">37861</option>
           <option value="39124.glb">39124</option>
           <option value="293454.glb">293454</option>
@@ -98,7 +94,7 @@ const ModelInput = () => {
           <option value="441708.glb">441708</option>
           <option value="demo.glb">demo</option>
         </select>
-        <div role="alert" className="alert alert-warning">
+        <div role="alert" className="alert alert-warning w-96">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 shrink-0 stroke-current"
@@ -112,15 +108,17 @@ const ModelInput = () => {
               d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
             />
           </svg>
-          <span>超过100M的模型，请从本地上传</span>
+          <span className="text-xs">
+            For models larger than 100M, please upload them locally.
+          </span>
         </div>
-        <div className="flex items-center gap-4">
-          <span className="badge whitespace-nowrap">剪裁容差:</span>
+        <div className="flex items-center gap-4 w-96">
+          <span className="badge whitespace-nowrap">clip tolerance:</span>
           <input
             className="input flex-1"
             type="number"
             value={clipTolerance}
-            placeholder="剪裁容差"
+            placeholder="clip tolerance"
             step={0.000001}
             onChange={(e) => {
               setClipTolerance(+e.target.value);
@@ -130,7 +128,7 @@ const ModelInput = () => {
       </div>
       {modelFileName && (
         <span className="badge whitespace-nowrap">
-          当前文件：{modelFileName}
+          current file：{modelFileName}
         </span>
       )}
     </div>

@@ -46,12 +46,12 @@ function App() {
         <ModelInput />
       </div>
       <div
-        className="fixed left-4 top-62 w-[294px] overflow-y-auto"
+        className="fixed left-4 top-64 w-96 overflow-y-auto"
         style={{
           height: `calc(100vh - 372px)`,
         }}
       >
-        <Leva fill titleBar={{ drag: false, filter: false }} />
+        <Leva fill titleBar={{ drag: false, filter: false }} hideCopyButton />
       </div>
       <div className="fixed right-4 top-4">
         <Legends />

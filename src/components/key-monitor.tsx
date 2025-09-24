@@ -9,7 +9,7 @@ const KeyMonitor = () => {
       {Boolean(latestClipWastedTime) && (
         <div className="flex items-center">
           <span className="badge font-mono text-xs">
-            当前剪切执行耗时：≈{latestClipWastedTime.toFixed(2)}ms
+            Current cut execution time：≈{latestClipWastedTime.toFixed(2)}ms
           </span>
         </div>
       )}

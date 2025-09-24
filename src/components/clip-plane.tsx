@@ -8,15 +8,15 @@ const ClipPlane = () => {
     "01 Occlusion method",
     {
       showClipPlane: {
-        label: "显示遮挡平面",
+        label: "show occlusion plane",
         value: false,
       },
       planeNormal: {
-        label: "平面法线",
+        label: "plane normal",
         value: [0, 0, 1],
       },
       planePosition: {
-        label: "平面位置",
+        label: "plane position",
         value: 0,
         step: 1,
       },

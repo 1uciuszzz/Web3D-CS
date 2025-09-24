@@ -19,10 +19,10 @@ const Scene = () => {
   const { showModel } = useControls(
     {
       showModel: {
-        label: "显示模型",
+        label: "show model",
         value: true,
       },
-      聚焦: button(() => handleFocus()),
+      "focus model": button(() => handleFocus()),
     },
     [handleFocus]
   );

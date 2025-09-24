@@ -50,20 +50,19 @@ const Csg = () => {
       "02 CSG method",
       {
         showClipPlane: {
-          label: "显示剪裁平面",
+          label: "show csg clip plane",
           value: false,
         },
-        剪裁: button(() => handleClip()),
-
+        cut: button(() => handleClip()),
         showClipResultMeshes: {
-          label: "显示剪裁结果",
+          label: "show clip result meshes",
           value: true,
         },
         clipResultMeshesWireframe: {
-          label: "剪裁结果线框显示",
+          label: "clip result meshes wireframe",
           value: false,
         },
-        清除剪裁结果: button(() => clearClipResult()),
+        "clear clip result": button(() => clearClipResult()),
       },
       [handleClip, clipPlaneMeshRef, clearClipResult]
     );

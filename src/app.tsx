@@ -21,7 +21,13 @@ import ClipUnoptimized from "./components/clip-unoptimized";
 function App() {
   return (
     <div className="w-screen h-screen">
-      <Canvas gl={{ localClippingEnabled: true, antialias: true }}>
+      <Canvas
+        gl={{
+          localClippingEnabled: true,
+          antialias: true,
+          powerPreference: "high-performance",
+        }}
+      >
         <AdaptiveDpr pixelated />
         <AdaptiveEvents />
         <Scene />

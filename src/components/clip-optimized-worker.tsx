@@ -8,18 +8,15 @@ import {
   latestClipWastedTimeAtom,
   theLongestEdgeLengthAtom,
 } from "../shared-variables";
+import useClipOptimized from "../hooks/use-clip-optimized-worker";
 import { Segments } from "@react-three/drei";
-import useBvh from "../hooks/use-bvh";
-import useClipOptimized from "../hooks/use-clip-optimized";
 
-const ClipOptimized = () => {
+const ClipOptimizedViaWebWorker = () => {
   const theLongestEdgeLength = useAtomValue(theLongestEdgeLengthAtom);
 
   const clipPlaneMeshRef = useRef<Mesh>(null);
 
   const { clip } = useClipOptimized();
-
-  const { buildBvh } = useBvh();
 
   const [clipResultLines, setClipResultLines] = useState<LineSegments[][]>([]);
 
@@ -29,12 +26,11 @@ const ClipOptimized = () => {
 
   const clipTolerance = useAtomValue(clipToleranceAtom);
 
-  const handleClip = () => {
+  const handleClip = async () => {
     setLatestClipWastedTime(0);
     if (clipPlaneMeshRef.current) {
       const startTime = performance.now();
-      buildBvh((item) => item.userData.canClip);
-      const { lines, meshList } = clip(
+      const { lines, meshList } = await clip(
         clipPlaneMeshRef.current,
         (item) => item.userData.canClip,
         clipTolerance
@@ -58,7 +54,7 @@ const ClipOptimized = () => {
     showClipResultMeshes,
     clipResultMeshesWireframe,
   } = useControls(
-    "04 Optimized method",
+    "05 Optimized method via web worker",
     {
       showClipPlane: {
         label: "show clip plane",
@@ -131,4 +127,4 @@ const ClipOptimized = () => {
   );
 };
 
-export default ClipOptimized;
+export default ClipOptimizedViaWebWorker;

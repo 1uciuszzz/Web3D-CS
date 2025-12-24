@@ -12,12 +12,13 @@ import Scene from "./scene";
 import ModelInput from "./components/model-input";
 import { Leva } from "leva";
 import Legends from "./components/legends";
-import ClipOptimized from "./components/clip-optimized";
+import ClipOptimized from "./components/clip-optimized-worker";
 import { Perf } from "r3f-perf";
 import KeyMonitor from "./components/key-monitor";
 import ClipPlane from "./components/clip-plane";
 import Csg from "./components/csg";
 import ClipUnoptimized from "./components/clip-unoptimized";
+import ClipOptimizedViaWebWorker from "./components/clip-optimized-worker";
 function App() {
   return (
     <div className="w-screen h-screen">
@@ -43,6 +44,7 @@ function App() {
         <Csg />
         <ClipUnoptimized />
         <ClipOptimized />
+        <ClipOptimizedViaWebWorker />
         <GizmoHelper>
           <GizmoViewport />
         </GizmoHelper>

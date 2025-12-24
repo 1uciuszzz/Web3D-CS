@@ -12,7 +12,7 @@ import Scene from "./scene";
 import ModelInput from "./components/model-input";
 import { Leva } from "leva";
 import Legends from "./components/legends";
-import ClipOptimized from "./components/clip-optimized-worker";
+import ClipOptimized from "./components/clip-optimized";
 import { Perf } from "r3f-perf";
 import KeyMonitor from "./components/key-monitor";
 import ClipPlane from "./components/clip-plane";

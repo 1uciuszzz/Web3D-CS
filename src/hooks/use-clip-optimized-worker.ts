@@ -12,7 +12,7 @@ import {
 } from "three";
 import { useThree } from "@react-three/fiber";
 import type { UseThree } from "../shared-variables";
-import ClipWorker from "../workers/clip-optimized.worker?worker";
+import ClipWorker from "../workers/clip-optimized.worker?worker&inline";
 import { useEffect, useRef } from "react";
 import type {
   ClipInput,

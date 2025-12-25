@@ -2,7 +2,7 @@ import { PivotControls, Wireframe } from "@react-three/drei";
 import { useAtomValue, useSetAtom } from "jotai";
 import { button, useControls } from "leva";
 import { useRef, useState } from "react";
-import { DoubleSide, LineSegments, Mesh } from "three";
+import { DoubleSide, LineBasicMaterial, LineSegments, Mesh } from "three";
 import {
   clipToleranceAtom,
   latestClipWastedTimeAtom,
@@ -11,17 +11,20 @@ import {
 import { Segments } from "@react-three/drei";
 import useBvh from "../hooks/use-bvh";
 import useClipOptimized from "../hooks/use-clip-optimized";
+import { useThree } from "@react-three/fiber";
 
 const ClipOptimized = () => {
   const theLongestEdgeLength = useAtomValue(theLongestEdgeLengthAtom);
 
   const clipPlaneMeshRef = useRef<Mesh>(null);
 
-  const { clip } = useClipOptimized();
+  const { scene } = useThree();
+
+  const { clip } = useClipOptimized(scene);
 
   const { buildBvh } = useBvh();
 
-  const [clipResultLines, setClipResultLines] = useState<LineSegments[][]>([]);
+  const [clipResultLines, setClipResultLines] = useState<LineSegments[]>([]);
 
   const [clipResultMeshes, setClipResultMeshes] = useState<Mesh[]>([]);
 
@@ -34,7 +37,7 @@ const ClipOptimized = () => {
     if (clipPlaneMeshRef.current) {
       const startTime = performance.now();
       buildBvh((item) => item.userData.canClip);
-      const { lines, meshList } = clip(
+      const { meshes, lines } = clip(
         clipPlaneMeshRef.current,
         (item) => item.userData.canClip,
         clipTolerance
@@ -43,7 +46,7 @@ const ClipOptimized = () => {
       const time = endtime - startTime;
       setLatestClipWastedTime(time);
       setClipResultLines(lines);
-      setClipResultMeshes(meshList);
+      setClipResultMeshes(meshes);
     }
   };
 
@@ -105,26 +108,31 @@ const ClipOptimized = () => {
       )}
       {showClipResultLines && clipResultLines.length && (
         <Segments>
-          {clipResultLines.flat().map((segment) => (
-            <primitive key={segment.uuid} object={segment} />
-          ))}
+          {clipResultLines.map((segment) => {
+            segment.renderOrder = 11;
+            (segment.material as LineBasicMaterial).depthTest = false;
+            return <primitive key={segment.uuid} object={segment} />;
+          })}
         </Segments>
       )}
 
       {showClipResultMeshes && clipResultMeshes.length && (
         <group>
-          {clipResultMeshes.map((mesh) => (
-            <mesh
-              key={mesh.uuid}
-              geometry={mesh.geometry}
-              material={mesh.material}
-              rotation={mesh.rotation}
-              position={mesh.position}
-              scale={mesh.scale}
-            >
-              {clipResultMeshesWireframe && <Wireframe />}
-            </mesh>
-          ))}
+          {clipResultMeshes.map((mesh) => {
+            mesh.renderOrder = 10;
+            return (
+              <mesh
+                key={mesh.uuid}
+                geometry={mesh.geometry}
+                material={mesh.material}
+                rotation={mesh.rotation}
+                position={mesh.position}
+                scale={mesh.scale}
+              >
+                {clipResultMeshesWireframe && <Wireframe />}
+              </mesh>
+            );
+          })}
         </group>
       )}
     </>

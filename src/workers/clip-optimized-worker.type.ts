@@ -1,26 +1,55 @@
-export type GeometryData = {
+export type Matrix4Tuple = [
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number
+];
+
+export type Vec2Tuple = [number, number];
+export type Vec3Tuple = [number, number, number];
+
+export interface SerializedGeometry {
   position: Float32Array;
-  index: Uint32Array | Uint16Array | null;
-};
+  index: Uint32Array | null;
+}
 
-export type MeshData = {
-  geometry: GeometryData;
-  matrixWorld: number[];
-};
+export interface SerializedMesh {
+  geometry: SerializedGeometry;
+  matrixWorld: Matrix4Tuple;
+}
 
-export type ClipInput = {
-  plane: MeshData;
-  targets: MeshData[];
+export interface PlaneBasisSerialized {
+  origin: Vec3Tuple;
+  xAxis: Vec3Tuple;
+  yAxis: Vec3Tuple;
+  normal: Vec3Tuple;
+}
+
+export interface ClipRequest {
+  plane: SerializedMesh;
+  basis: PlaneBasisSerialized;
+  targets: SerializedMesh[];
   tolerance: number;
-  planeNormal: number[];
-};
+}
 
-export type MeshResultItem = {
-  buffer: Float32Array;
+export interface PolygonResult {
   sourceIndex: number;
-};
+  triangles: Float32Array; // 3D triangles
+  lines: Float32Array; // 3D polygon edges
+}
 
-export type ClipResult = {
-  lines: Float32Array[];
-  meshes: MeshResultItem[];
-};
+export interface ClipResponse {
+  polygons: PolygonResult[];
+}

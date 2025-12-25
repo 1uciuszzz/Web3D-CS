@@ -32,7 +32,7 @@ function App() {
         <AdaptiveDpr pixelated />
         <AdaptiveEvents />
         <Scene />
-        <Environment preset="park" background blur={0.9} />
+        <Environment preset="park" />
         <PerspectiveCamera
           makeDefault
           position={[0, 0, 1]}
